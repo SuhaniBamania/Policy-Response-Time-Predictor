@@ -3,13 +3,12 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import os
 
-# --- Configuration ---
-INPUT_DATASET_FILENAME = 'response_data.csv' # Your complete data file
+INPUT_DATASET_FILENAME = 'response_data.csv' 
 TRAIN_FILENAME = 'train_dataset.csv'
 TEST_FILENAME = 'test_dataset.csv'
 TEST_SET_SIZE = 0.2
 RANDOM_STATE = 42
-# ---------------------
+
 
 def split_dataset():
     if not os.path.exists(INPUT_DATASET_FILENAME):
@@ -42,3 +41,4 @@ def split_dataset():
 
 if __name__ == '__main__':
     split_dataset()
+
