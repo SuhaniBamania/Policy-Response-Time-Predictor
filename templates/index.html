@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Case Analysis & Prediction Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Comprehensive Case Analysis Engine</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">Submit case text and metadata to generate a resolution forecast.</p>
+        </header>
+
+        <!-- Input Form Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 mb-8">
+            <form id="prediction-form">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left side: Text Input -->
+                    <div class="lg:col-span-2">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Case Description</h2>
+                        <div>
+                            <label for="case_text" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Case Text</label>
+                            <textarea id="case_text" rows="20" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3" placeholder="Paste the entire text of the complaint, appeal, or information request here..."></textarea>
+                        </div>
+                    </div>
+                    <!-- Right side: Metadata -->
+                    <div class="lg:col-span-1">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Case Metadata</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="filing_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filing Date</label>
+                                <input type="date" id="filing_date" name="filing_date" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3" required>
+                            </div>
+                            <div>
+                                <label for="request_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Request Type</label>
+                                <select id="request_type" name="request_type" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Information Request</option>
+                                    <option selected>Complaint</option>
+                                    <option>Appeal</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                                <select id="category" name="category" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Billing and Payments</option>
+                                    <option>Service Quality/Delivery</option>
+                                    <option>Application Status/Delay</option>
+                                    <option>Policy Information</option>
+                                    <option>Staff Misconduct</option>
+                                    <option>Infrastructure Issue</option>
+                                    <option>Account Information</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="department" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
+                                <select id="department" name="department" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Health and Family Welfare</option>
+                                    <option>Transport</option>
+                                    <option>Education</option>
+                                    <option>Finance and Revenue</option>
+                                    <option>Home Affairs</option>
+                                    <option>Urban Development</option>
+                                    <option>Rural Development</option>
+                                    <option>Public Works Department (PWD)</option>
+                                    <option>Power and Energy</option>
+                                    <option>Water Resources</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="applicant_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Applicant Type</label>
+                                <select id="applicant_type" name="applicant_type" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Individual</option>
+                                    <option>Organization/NGO</option>
+                                    <option>Media Personnel</option>
+                                    <option>Government Employee</option>
+                                    <option>VIP</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300">State / Union Territory</label>
+                                <select id="state" name="state" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Andaman and Nicobar Islands</option>
+                                    <option>Andhra Pradesh</option>
+                                    <option>Arunachal Pradesh</option>
+                                    <option>Assam</option>
+                                    <option>Bihar</option>
+                                    <option>Chandigarh</option>
+                                    <option>Chhattisgarh</option>
+                                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                                    <option>Delhi</option>
+                                    <option>Goa</option>
+                                    <option>Gujarat</option>
+                                    <option>Haryana</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Jammu and Kashmir</option>
+                                    <option>Jharkhand</option>
+                                    <option>Karnataka</option>
+                                    <option>Kerala</option>
+                                    <option>Ladakh</option>
+                                    <option>Lakshadweep</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Maharashtra</option>
+                                    <option>Manipur</option>
+                                    <option>Meghalaya</option>
+                                    <option>Mizoram</option>
+                                    <option>Nagaland</option>
+                                    <option>Odisha</option>
+                                    <option>Puducherry</option>
+                                    <option>Punjab</option>
+                                    <option>Rajasthan</option>
+                                    <option>Sikkim</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Telangana</option>
+                                    <option>Tripura</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Uttarakhand</option>
+                                    <option>West Bengal</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="region" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Region</label>
+                                <select id="region" name="region" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>Northern</option>
+                                    <option>Southern</option>
+                                    <option>Eastern</option>
+                                    <option>Western</option>
+                                    <option>Central</option>
+                                    <option>North-Eastern</option>
+                                </select>
+                            </div>
+                             <div>
+                                <label for="language" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Language</label>
+                                <select id="language" name="language" class="mt-1 block w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3">
+                                    <option>English</option>
+                                    <option>Hindi</option>
+                                    <option>Bengali</option>
+                                    <option>Marathi</option>
+                                    <option>Telugu</option>
+                                    <option>Tamil</option>
+                                    <option>Gujarati</option>
+                                    <option>Urdu</option>
+                                    <option>Kannada</option>
+                                    <option>Odia</option>
+                                    <option>Malayalam</option>
+                                    <option>Punjabi</option>
+                                    <option>Assamese</option>
+                                    <option>Other Regional</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center pt-2">
+                                <input id="is_repeat_complaint" name="is_repeat_complaint" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="is_repeat_complaint" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">This is a repeat complaint/appeal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <div class="mt-8 flex justify-end">
+                    <button type="submit" id="predict-button" class="inline-flex justify-center py-3 px-10 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Analyze & Predict
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="grid grid-cols-1 lg:grid-cols-3 gap-6 opacity-0 transition-opacity duration-500 -translate-y-4">
+            <!-- Left & Center Columns -->
+            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="sm:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+                    <h2 class="text-sm font-medium text-gray-500 dark:text-gray-400">Predicted Resolution Time</h2>
+                    <div class="mt-2 flex items-baseline">
+                        <p id="predicted_days" class="text-6xl font-bold text-blue-600 dark:text-blue-400">--</p>
+                        <span class="ml-2 text-xl font-medium text-gray-600 dark:text-gray-300">days</span>
+                    </div>
+                    <p id="predicted_range" class="text-gray-500 dark:text-gray-400 mt-1">Range: --</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center justify-center text-center">
+                    <h2 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Model Confidence</h2>
+                    <div class="relative w-32 h-32">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle class="text-gray-200 dark:text-gray-700" stroke-width="10" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+                            <circle id="confidence-circle" class="progress-ring__circle text-blue-600 dark:text-blue-400" stroke-width="10" stroke-linecap="round" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+                        </svg>
+                        <span id="confidence-value" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold">--%</span>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center justify-center text-center">
+                     <h2 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Anomaly Detection</h2>
+                     <div class="flex flex-col items-center">
+                        <div id="anomaly-icon-container"></div>
+                        <p id="anomaly-level" class="mt-3 font-semibold text-lg"></p>
+                        <p id="anomaly-explanation" class="text-xs text-gray-500 dark:text-gray-400 mt-1"></p>
+                     </div>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Predicted Risk Level</h3>
+                    <div class="mt-2 flex items-center">
+                        <span id="risk-indicator" class="h-3 w-3 rounded-full mr-2"></span>
+                        <p id="risk-level" class="text-2xl font-semibold"></p>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Predicted Priority</h3>
+                    <div class="mt-2 flex items-center">
+                        <span id="priority-indicator" class="h-3 w-3 rounded-full mr-2"></span>
+                        <p id="priority-level" class="text-2xl font-semibold"></p>
+                    </div>
+                </div>
+                 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Predicted Case Complexity</h3>
+                    <div class="mt-2 flex items-center">
+                         <span id="complexity-indicator" class="h-3 w-3 rounded-full mr-2"></span>
+                        <p id="complexity-level" class="text-2xl font-semibold"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('filing_date').valueAsDate = new Date();
+
+        const form = document.getElementById('prediction-form');
+        const dashboard = document.getElementById('dashboard-section');
+        const predictButton = document.getElementById('predict-button');
+
+        // --- MOCK MODEL FUNCTION ---
+        function getMockPrediction(inputs) {
+            const text = inputs.case_text.toLowerCase();
+            let complexity_level = 'Low';
+            let predicted_days = 10;
+
+            // --- Text Analysis Simulation ---
+            if (text.length > 500) {
+                predicted_days += 10;
+                complexity_level = 'High';
+            } else if (text.length > 200) {
+                predicted_days += 5;
+                complexity_level = 'Medium';
+            }
+            if (text.includes('appeal') || text.includes('legal') || text.includes('denial')) {
+                predicted_days += 15;
+                complexity_level = 'High';
+            }
+            if (text.includes('overcharged') || text.includes('refund') || text.includes('billing')) {
+                predicted_days += 8;
+                if (complexity_level !== 'High') complexity_level = 'Medium';
+            }
+
+            // --- Metadata Analysis ---
+            if (inputs.request_type === 'Appeal') {
+                predicted_days += 10;
+                complexity_level = 'High';
+            }
+            if (inputs.department.includes('Finance')) predicted_days += 5;
+            if (inputs.is_repeat_complaint) predicted_days += 12;
+            if (inputs.applicant_type === 'VIP') predicted_days -= 5;
+            if (inputs.language !== 'English' && inputs.language !== 'Hindi') predicted_days += 3;
+            if (inputs.filing_day_of_week === 'Friday') predicted_days += 2;
+            
+            const seasons = ['Winter', 'Spring', 'Summer', 'Autumn'];
+            const season = seasons[Math.floor((inputs.filing_month - 1) / 3)];
+
+            const risk_level = predicted_days > 35 ? 'High' : (predicted_days > 20 ? 'Medium' : 'Low');
+            const priority = complexity_level === 'High' || inputs.is_repeat_complaint || inputs.applicant_type === 'VIP' ? 'High' : 'Medium';
+
+            return {
+                "success": true,
+                "data": {
+                    "predicted_days": Math.max(7, Math.round(predicted_days)),
+                    "predicted_range": `${Math.max(5, Math.round(predicted_days) - 3)}-${Math.round(predicted_days) + 4} days`,
+                    "risk_level": risk_level,
+                    "priority": priority,
+                    "complexity_level": complexity_level,
+                    "season": season,
+                    "confidence": 0.75 + (Math.random() * 0.20),
+                    "anomaly_detection": {
+                        "anomaly_level": "Normal",
+                        "explanation": `Analysis complete. Case complexity assessed as ${complexity_level}.`
+                    }
+                },
+                "timestamp": new Date().toISOString()
+            };
+        }
+
+        // --- UI UPDATE FUNCTION ---
+        function populateDashboard(responseData) {
+            const data = responseData.data;
+
+            document.getElementById('predicted_days').textContent = data.predicted_days;
+            document.getElementById('predicted_range').textContent = `Range: ${data.predicted_range}`;
+
+            const riskLevelEl = document.getElementById('risk-level');
+            const riskIndicatorEl = document.getElementById('risk-indicator');
+            riskLevelEl.textContent = data.risk_level;
+            const riskColorMap = { low: 'green', medium: 'yellow', high: 'red' };
+            riskIndicatorEl.className = `h-3 w-3 rounded-full mr-2 bg-${riskColorMap[data.risk_level.toLowerCase()]}-500`;
+            riskLevelEl.className = `text-2xl font-semibold text-${riskColorMap[data.risk_level.toLowerCase()]}-600 dark:text-${riskColorMap[data.risk_level.toLowerCase()]}-400`;
+
+            const priorityLevelEl = document.getElementById('priority-level');
+            const priorityIndicatorEl = document.getElementById('priority-indicator');
+            priorityLevelEl.textContent = data.priority;
+            const priorityColorMap = { low: 'gray', medium: 'blue', high: 'purple' };
+            priorityIndicatorEl.className = `h-3 w-3 rounded-full mr-2 bg-${priorityColorMap[data.priority.toLowerCase()]}-500`;
+            priorityLevelEl.className = `text-2xl font-semibold text-${priorityColorMap[data.priority.toLowerCase()]}-600 dark:text-${priorityColorMap[data.priority.toLowerCase()]}-400`;
+
+            const complexityLevelEl = document.getElementById('complexity-level');
+            const complexityIndicatorEl = document.getElementById('complexity-indicator');
+            complexityLevelEl.textContent = data.complexity_level;
+            complexityIndicatorEl.className = `h-3 w-3 rounded-full mr-2 bg-${riskColorMap[data.complexity_level.toLowerCase()]}-500`;
+            complexityLevelEl.className = `text-2xl font-semibold text-${riskColorMap[data.complexity_level.toLowerCase()]}-600 dark:text-${riskColorMap[data.complexity_level.toLowerCase()]}-400`;
+
+            const confidencePercent = Math.round(data.confidence * 100);
+            document.getElementById('confidence-value').textContent = `${confidencePercent}%`;
+            const circle = document.getElementById('confidence-circle');
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            const offset = circumference - data.confidence * circumference;
+            circle.style.strokeDashoffset = offset;
+
+            document.getElementById('anomaly-level').textContent = data.anomaly_detection.anomaly_level;
+            document.getElementById('anomaly-explanation').textContent = data.anomaly_detection.explanation;
+            document.getElementById('anomaly-icon-container').innerHTML = `<svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+            document.getElementById('anomaly-level').className = `mt-3 font-semibold text-lg text-green-600 dark:text-green-400`;
+
+            dashboard.classList.remove('opacity-0', '-translate-y-4');
+        }
+
+        // --- FORM SUBMISSION HANDLER ---
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (document.getElementById('case_text').value.trim() === "") {
+                alert("Please enter the case text before predicting.");
+                return;
+            }
+            predictButton.disabled = true;
+            predictButton.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...`;
+            dashboard.classList.add('opacity-0', '-translate-y-4');
+
+            // --- Collect all data from the form ---
+            const formData = new FormData(form);
+            const inputs = {};
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'filing_date') {
+                    inputs[key] = value;
+                }
+            }
+            inputs.case_text = document.getElementById('case_text').value;
+            inputs.is_repeat_complaint = document.getElementById('is_repeat_complaint').checked;
+            
+            // --- Derive date parts from the date picker ---
+            const filingDate = new Date(document.getElementById('filing_date').value);
+            const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            inputs.filing_day_of_week = dayNames[filingDate.getUTCDay()];
+            inputs.filing_month = filingDate.getUTCMonth() + 1;
+            inputs.filing_year = filingDate.getUTCFullYear();
+
+            setTimeout(() => { 
+                const response = getMockPrediction(inputs);
+                if (response.success) {
+                    populateDashboard(response);
+                } else {
+                    alert('Prediction failed.');
+                }
+                predictButton.disabled = false;
+                predictButton.textContent = 'Analyze & Predict';
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
